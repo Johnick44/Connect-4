@@ -16,6 +16,7 @@ class Game:
         self. player2 = P2.first
         if (P1.first == P2.first) and (P1.last == P2.last):
             print("Player1 or Player2 please select another name, thank you!")
+            raise AttributeError
         self.current_map = [
                         [0,0,0,0,0,0,0],
                         [0,0,0,0,0,0,0],
@@ -57,6 +58,7 @@ class Game:
                     Game.update_map(self, self.position2)
                 else:
                     self.current_map[5-self.count][position] = Player.P2.sign2
-
+        if self.count == 7:
+            self.count  = 0
 
 
