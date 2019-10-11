@@ -34,12 +34,14 @@ class Game:
                 raise AttributeError
             else:
                 Game.update_map(self, self.position1)
+                return self.current_map
         else:
             self.position2 = input(int())
             if self.position2.isalp() or ((self.position2>=7) or (self.position2<=-1)):
                 raise AttributeError
             else:
                 Game.update_map(self, self.position2)
+                return self.current_map
 
     def update_map(self, position):
         self.count = 0
