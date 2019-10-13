@@ -1,4 +1,5 @@
 class Player:
+    first = ""
     ''' Defining what a player  in connect 4.'''
     def __init__(self, first, last):
         self.first = first
@@ -7,7 +8,7 @@ class Player:
 class P1(Player):
     ''' Input data for player 1, this includes name and sign.'''
     def __init__(self, first, last, sign1):
-        Player.__init__(self, first, last )
+        Player.__init__(self, first, last)
         self.sign1 = sign1
         if self.sign1 == 0:
             print("please select another sign")
