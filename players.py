@@ -1,13 +1,13 @@
 class Player:
     first = ""
     ''' Defining what a player  in connect 4.'''
-    def __init__(self, first, last):
+    def __init__(self, first: str, last: str):
         self.first = first
         self.last = last
 
 class P1(Player):
     ''' Input data for player 1, this includes name and sign.'''
-    def __init__(self, first, last, sign1):
+    def __init__(self, first: str, last: str, sign1: str):
         Player.__init__(self, first, last)
         self.sign1 = sign1
         if self.sign1 == 0:
@@ -15,7 +15,7 @@ class P1(Player):
             raise AttributeError
 class P2(Player):
     ''' Input data for player 2, this includes name and sign. '''
-    def __init__(self, first, last, sign2):
+    def __init__(self, first: str, last: str, sign2: str):
         Player.__init__(self, first, last)
         self.sign2 = sign2
         if self.sign2 == 0:
