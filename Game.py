@@ -1,5 +1,3 @@
-from players import P1, P2
-import random
 
 
 class Game:
@@ -10,18 +8,12 @@ class Game:
     and diagonal.
     '''
 
-
-    def __init__(self, position1: int, position2: int):
+    def __init__(self):
         '''
         Initializes all of the players movements and also creates the map for
         the player.
          '''
-
-        self.position1 = position1
-        self.position2 = position2
-        self.turn = random.randint()
-        self.player1 = P1(input(), input(), input())
-        self. player2 = P2(input(), input(), input())
+        self.moves = 1
         self.current_map = [
             [0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0],
@@ -30,59 +22,72 @@ class Game:
             [0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0]]
 
-        if (self.player1.first == self.player2.first) and \
-                (self.player1.last == self.player2.last):
-            print("Player1 or Player2 please select another name, thank you!")
-            raise AttributeError
+        Game.display_board(self, self.current_map, Bool=False)
 
-    def move(self, point):
+    def display_board(self, maps, Bool: bool):
+        if Bool == False:
+            print(maps)
+        print("Winner Winner Chicken dinner!")
+
+    def move(self, point: int):
         '''
         Makes a player make a command that will allow to put a sign in which
         the position given'''
-        if self.turn % 2 == 0:
-            self.position1 = int(point)
-            if(self.position1 >= 7) or (self.position1 <= -1):
-                raise AttributeError
+        player1 = X
+        player2 = O
+        if (0 <= point <= 6):
+            if self.moves % 2 == 0:
+                Game.update_map(self, point, player2)
+                Game.display_board(self, self.current_map)
             else:
-                Game.update_map(self, self.position1)
-                return self.current_map
+                Game.update_map(self, point, player1)
+                Game.display_board(self, self.current_map)
         else:
-            self.position2 = int(point)
-            if(self.position2 >= 7) or (self.position2 <= -1):
-                raise AttributeError
-            else:
-                Game.update_map(self, self.position2)
-                return self.current_map
+            raise TypeError
+        self.moves += 1
 
-    def update_map(self, position):
+    def update_map(self, position, sign):
+        '''Updates the map so that self.current_map has a new sign.'''
         count = 0
         while count <= len(self.current_map):
-            if (self.current_map[5-count][position] == P1.sign1) \
-                or(self.current_map[5-count][position] == P2.sign2):
-                count+= 1
+            if (self.current_map[5 - count][position] == X) \
+                    or (self.current_map[5 - count][position] == O):
+                count += 1
             else:
-                if self.turn % 2 ==0:
-                    self.current_map[5-count][position] = P1.sign1
-                    return
-                else:
-                    self.current_map[5-count][position] = P2.sign2
-                    return
+                self.current_map[5 - count][position] = sign
+                Game.win(self, sign)
 
-
-    def win(self):
+    def win(self, sign):
+        winner = False
         column_count = 6
         row_count = 5
-        #check for horizontal win
-        for column in range(column_count-3):
+        # check for horizontal win
+        for column in range(column_count - 3):
             for row in range(row_count):
-                if self.current_map[row][column] == P2.sign2 \
-                    and self.current_map[row][column+1] == P2.sign2 \
-                    and self.current_map[row][column+2] == P2.sign2 \
-                    and self.current_map[row][column+3] == P2.sign2:
-                    return True
-                elif self.current_map[row][column] == P1.sign1 \
-                    and self.current_map[row][column+1] == P1.sign1 \
-                    and self.current_map[row][column+2] == P1.sign1 \
-                    and self.current_map[row][column+3] == P1.sign1:
-                    return True
-        #check for vertical win
+                if self.current_map[row][column] == sign \
+                        and self.current_map[row][column + 1] == sign \
+                        and self.current_map[row][column + 2] == sign \
+                        and self.current_map[row][column + 3] == sign:
+                    winner = True
+                    Game.display_board(self, self.current_map, winner)
+                    Game.game_over(self)
+        # check for vertical win
+        for column in range(column_count):
+            for row in range(row_count - 3):
+                if self.current_map[row][column] == sign \
+                        and self.current_map[row + 1][column] == sign \
+                        and self.current_map[row + 2][column] == sign \
+                        and self.current_map[row + 3][column] == sign:
+                    winner = True
+                    Game.display_board(self, self.current_map, winner)
+                    Game.game_over(self)
+
+    def game_over(self):
+        return True
+
+
+if __name__ == '__main__':
+    g = Game()
+    print("I hope this works")
+    while not g.game_over():
+        action = g.move(2)
