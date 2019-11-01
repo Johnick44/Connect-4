@@ -53,6 +53,7 @@ class Game:
             else:
                 self.current_map[5 - count][position] = sign
                 Game.win(self, sign)
+                count = 7
 
     def win(self, sign):
         column_count = 6
@@ -77,11 +78,10 @@ class Game:
                     Game.Game_Over(self)
 
     def Game_Over(self):
-        print("Winner Winner Chicken Dinner")
-        return True
+        print("Winner Winner Chicken Dinner /n good job!")
 
 
 if __name__ == '__main__':
     g = Game()
-    while g.Game_Over():
+    while True:
         g.move()
