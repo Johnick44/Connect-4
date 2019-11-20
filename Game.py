@@ -11,6 +11,10 @@ class Game:
 
         # Initializes all of the players movements and also creates the map for
         # the player.
+        self.rows_count = 6
+        self.column_count = 7
+        self.player1 = "X"
+        self.player2 = "Y"
         self.moves = 1
         self.current_map = [
             [0, 0, 0, 0, 0, 0, 0],
@@ -30,25 +34,24 @@ class Game:
         # Makes a player make a command that will allow to put a sign in which
         # the position given
         point = int(input("please put a number between 0-6:"))
-        player1 = "X"
-        player2 = "Y"
         if 0 <= point <= 6:
             if self.moves % 2 == 0:
-                Game.update_map(self, point, player2)
+                Game.update_map(self, point, self.player2)
                 Game.display(self, self.current_map)
             else:
-                Game.update_map(self, point, player1)
+                Game.update_map(self, point, self.player1)
                 Game.display(self, self.current_map)
             self.moves += 1
         else:
-            raise TypeError
+            raise ValueError("The number selected is either below 0 or above 6,\
+             please put another number in between 0-6!")
 
     def update_map(self, position, sign):
         # Updates the map so that self.current_map has a new sign.
         count = 0
         while count <= len(self.current_map):
-            if (self.current_map[5 - count][position] == "X") \
-                    or (self.current_map[5 - count][position] == "Y"):
+            if (self.current_map[5 - count][position] == self.player1) \
+                    or (self.current_map[5 - count][position] == self.player2):
                 count += 1
             else:
                 self.current_map[5 - count][position] = sign
@@ -56,30 +59,54 @@ class Game:
                 count = 7
 
     def win(self, sign):
-        column_count = 6
-        row_count = 5
-        # check for horizontal win
-        for column in range(column_count - 3):
-            for row in range(row_count):
-                if self.current_map[row][column] == sign \
-                        and self.current_map[row][column + 1] == sign \
-                        and self.current_map[row][column + 2] == sign \
-                        and self.current_map[row][column + 3] == sign:
+        # Horizontal Win
+        for rows in range(self.rows_count):
+            for columns in range(self.column_count-3):
+                if self.current_map[rows][columns] == sign \
+                    and self.current_map[rows][columns+1] == sign and \
+                    self.current_map[rows][columns+2] == sign and \
+                        self.current_map[rows][columns+3] == sign:
                     Game.display(self, self.current_map)
-                    Game.Game_Over(self)
-        # check for vertical win
-        for column in range(column_count):
-            for row in range(row_count - 3):
-                if self.current_map[row][column] == sign \
-                        and self.current_map[row + 1][column] == sign \
-                        and self.current_map[row + 2][column] == sign \
-                        and self.current_map[row + 3][column] == sign:
+                    Game.game_over(self)
+        # Vertical Win
+        for rows in range(self.rows_count-3):
+            for columns in range(self.column_count):
+                if self.current_map[rows][columns] == sign \
+                    and self.current_map[rows+1][columns] == sign and \
+                    self.current_map[rows+2][columns] == sign and \
+                        self.current_map[rows+3][columns] == sign:
                     Game.display(self, self.current_map)
-                    Game.Game_Over(self)
+                    Game.game_over(self)
+        # Diagonal Positive Win
+        for rows in range(self.rows_count-3):
+            for columns in range(self.column_count-3):
+                if self.current_map[rows][columns] == sign \
+                    and self.current_map[rows+1][columns+1] == sign and \
+                    self.current_map[rows+2][columns+2] == sign and \
+                        self.current_map[rows+3][columns+3] == sign:
+                    Game.display(self, self.current_map)
+                    Game.game_over(self)
+        # Diagonal Negative Win
+        for rows in range(-1, 2-self.rows_count, -1):
+            for columns in range(self.column_count-3):
+                if self.current_map[rows][columns] == sign \
+                    and self.current_map[rows-1][columns+1] == sign and \
+                    self.current_map[rows-2][columns+2] == sign and \
+                        self.current_map[rows-3][columns+3] == sign:
+                    Game.display(self, self.current_map)
+                    Game.game_over(self)
 
-    def Game_Over(self):
-        print("Winner Winner Chicken Dinner /n good job!")
-
+    def game_over(self):
+        print("Winner Winner Chicken Dinner "
+              "\n good job! "
+              "\n new game will start now!")
+        self.current_map = [
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0]]
 
 if __name__ == '__main__':
     g = Game()
